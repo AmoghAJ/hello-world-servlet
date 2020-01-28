@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  hello-world:
+    build:
+      context: .
+    container_name: hello-world-servlet
+    ports:
+      - "4440:8080"
