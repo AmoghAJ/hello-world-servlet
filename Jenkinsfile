@@ -28,18 +28,21 @@ pipeline {
                     sh 'echo "Trigger Slack Notification"'
                 }
             }
-        }  
-    }
-    post {
-        success {
-            script{
-                git_hash = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                zip_filename = "hello-world-${git_hash}.zip"
-                sh """
-                    zip ${zip_filename} target/*.war
-                    aws s3 cp ${zip_filename} s3://hello-world-ci-artifacts/
-                    """
-            }
         }
+        stage('Archive artifacts'){
+            when {
+                branch 'master'
+            }
+            steps {
+                script{
+                    git_hash = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+                    zip_filename = "hello-world-${git_hash}.zip"
+                    sh """
+                        zip ${zip_filename} target/*.war
+                        aws s3 cp ${zip_filename} s3://hello-world-ci-artifacts/
+                        """
+                }
+            }
+        }  
     }
 }
