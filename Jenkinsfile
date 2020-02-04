@@ -34,10 +34,10 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh """"
+                sh """
                     zip ${ARTIFACT_ZIP} target/*.war
                     aws s3 cp ${ARTIFACT_ZIP} s3://hello-world-ci-artifacts/
-                """"
+                """
             }
         }  
     }
