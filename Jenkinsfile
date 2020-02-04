@@ -1,12 +1,12 @@
 pipeline {
+    agent { label 'ci' }
     options { 
         buildDiscarder(logRotator(numToKeepStr: '5')) 
         }
-    agent {
-        node {
-            label 'ci'
-        }
-    }    
+    environment{
+        GIT_SHORT_HASH = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
+        ARTIFACT_ZIP   = "hello-world-${GIT_SHORT_HASH}.zip"
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -34,14 +34,10 @@ pipeline {
                 branch 'master'
             }
             steps {
-                script{
-                    git_hash = sh(returnStdout: true, script: 'git rev-parse --short HEAD').trim()
-                    zip_filename = "hello-world-${git_hash}.zip"
-                    sh """
-                        zip ${zip_filename} target/*.war
-                        aws s3 cp ${zip_filename} s3://hello-world-ci-artifacts/
-                        """
-                }
+                sh """"
+                    zip ${ARTIFACT_ZIP} target/*.war
+                    aws s3 cp ${ARTIFACT_ZIP} s3://hello-world-ci-artifacts/
+                """"
             }
         }  
     }
