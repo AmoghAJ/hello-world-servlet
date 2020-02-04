@@ -1,4 +1,5 @@
-# Java Hello World Servlet
+# Hello World Java Servlet
+Author: Amogh Jagadale
 
 Usage:
 ```
