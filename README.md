@@ -1,4 +1,4 @@
-# Java Hello World Servlet
+# Hello World Servlet
 
 Usage:
 ```
