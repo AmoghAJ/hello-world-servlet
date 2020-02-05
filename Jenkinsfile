@@ -15,11 +15,6 @@ pipeline {
         S3_BUCKET      = getArtifactBucket()
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/AmoghAJ/hello-world-servlet.git'
-            }
-        }
         stage('Build') {
             steps {
                 sh 'mvn clean install -U'
