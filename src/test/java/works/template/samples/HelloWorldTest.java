@@ -36,6 +36,6 @@ public class HelloWorldTest {
         when(response.getWriter()).thenReturn(writer);
 
         servlet.doGet(request, response);
-        assertEquals("Hello World!", new String( out.toByteArray(), "UTF-8"));
+        assertEquals("foo bar", new String( out.toByteArray(), "UTF-8"));
     }
 }
