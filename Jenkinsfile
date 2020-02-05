@@ -15,11 +15,6 @@ pipeline {
         S3_BUCKET      = getArtifactBucket()
     }
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/AmoghAJ/hello-world-servlet.git'
-            }
-        }
         stage('Build') {
             steps {
                 sh 'mvn clean install -U'
@@ -29,7 +24,7 @@ pipeline {
                         junit 'target/surefire-reports/*.xml'
                         sh """
                         zip ${ARTIFACT_ZIP} target/*.war
-                        aws s3 cp ${ARTIFACT_ZIP} s3://hello-world-ci-artifacts/
+                        aws s3 cp ${ARTIFACT_ZIP} s3://${S3_BUCKET}/
                         """
                         archiveArtifacts artifacts: 'target/*.war', fingerprint: true
                     }
