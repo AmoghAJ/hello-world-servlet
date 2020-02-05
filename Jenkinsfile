@@ -34,6 +34,54 @@ pipeline {
                     sh 'echo "Trigger Slack Notification"'
                 }
             }
-        }  
+        }
+        stage('Deploy to QA') {
+            when {
+                branch 'master'
+            }
+            steps {
+                build job: 'CD', 
+                parameters: [string(name: 'APPLICATION', value: 'hello-world'),
+                             string(name: 'ENVIORNMENT', value: 'QA')]
+            }
+            post {
+                success {
+                    echo 'Promote application artifact to TEST'
+                }
+            }   
+        }
+        stage('Deploy to TEST') {
+            when {
+                branch 'master'
+            }
+            steps {
+                build job: 'CD', 
+                parameters: [string(name: 'APPLICATION', value: 'hello-world'),
+                             string(name: 'ENVIORNMENT', value: 'TEST'),
+                             booleanParam(name: 'RM_APPROVAL', value: true)]
+            }
+            post {
+                success {
+                    echo 'Promote application artifact to PROD'
+                }
+            }
+        }
+        stage('Deploy to PROD') {
+            when {
+                branch 'master'
+            }
+            steps {
+                build job: 'CD', 
+                parameters: [string(name: 'APPLICATION', value: 'hello-world'),
+                             string(name: 'ENVIORNMENT', value: 'PROD'),
+                             booleanParam(name: 'RM_APPROVAL', value: true),
+                             booleanParam(name: 'MS_APPROVAL', value: true)]
+            }
+            post {
+                success {
+                    echo 'Application Deployed to PROD'
+                }
+            }
+        } 
     }
 }
