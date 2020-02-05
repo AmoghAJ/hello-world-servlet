@@ -20,14 +20,16 @@ pipeline {
                 sh 'mvn clean install -U'
             }
             post {
-                success {
-                        junit 'target/surefire-reports/*.xml'
-                        sh """
-                        zip ${ARTIFACT_ZIP} target/*.war
-                        aws s3 cp ${ARTIFACT_ZIP} s3://${S3_BUCKET}/
-                        """
-                        archiveArtifacts artifacts: 'target/*.war', fingerprint: true
-                    }
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+                success {    
+                    sh """
+                    zip ${ARTIFACT_ZIP} target/*.war
+                    aws s3 cp ${ARTIFACT_ZIP} s3://${S3_BUCKET}/
+                    """
+                    archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                }
                 failure {
                     sh 'echo "Trigger Slack Notification"'
                 }
