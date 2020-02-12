@@ -1,7 +1,7 @@
 @Library('jenkins-shared-lib')_
 
 def releaseConfig = [
-        version: "1.0",
+        version: misc.getReleaseVersion(),
         deploy: [            
             qa: true,
             test: true,
