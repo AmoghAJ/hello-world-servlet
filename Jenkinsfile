@@ -21,9 +21,11 @@ pipeline {
                     junit 'target/surefire-reports/*.xml'
                 }
                 success {
-                    misc.packageArtifact(ARTIFACT_ZIP, "target/*.war")
-                    awss3cp s3_object: ARTIFACT_ZIP,destination: misc.s3BucketPadding(S3_BUCKET)   
-                    archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                    script {
+                        misc.packageArtifact(ARTIFACT_ZIP, "target/*.war")
+                        awss3cp s3_object: ARTIFACT_ZIP,destination: misc.s3BucketPadding(S3_BUCKET)   
+                        archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                    }
                 }
                 failure {
                     println "Slack notification: Build stage failure"
