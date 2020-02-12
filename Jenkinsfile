@@ -22,7 +22,7 @@ pipeline {
                 }
                 success {
                     misc.packageArtifact(ARTIFACT_ZIP, "target/*.war")
-                    awss3cp s3_object: ,destination: misc.s3BucketPadding(S3_BUCKET)   
+                    awss3cp s3_object: ARTIFACT_ZIP,destination: misc.s3BucketPadding(S3_BUCKET)   
                     archiveArtifacts artifacts: 'target/*.war', fingerprint: true
                 }
                 failure {
