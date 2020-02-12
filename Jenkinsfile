@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                maven action: "clean install -U"
+                mavenOperations action: "clean install -U"
             }
             post {
                 always {
