@@ -10,4 +10,4 @@ In browser:
 ```
 http://localhost:4040/hello-world/
 ```
-Runs unit test, and generates report.
+Runs unit test, and generates report, etc etc.
