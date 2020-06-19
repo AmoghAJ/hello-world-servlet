@@ -36,6 +36,6 @@ public class HelloWorldTest {
         when(response.getWriter()).thenReturn(writer);
 
         servlet.doGet(request, response);
-        assertEquals("Hello Wirecard.", new String( out.toByteArray(), "UTF-8"));
+        assertEquals("Hello Brainstroming demo.", new String( out.toByteArray(), "UTF-8"));
     }
 }
